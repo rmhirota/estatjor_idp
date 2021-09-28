@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Estatística e jornalismo</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Renata Hirota" />
+    <script src="index_files/header-attrs/header-attrs.js"></script>
+    <link href="index_files/font-awesome-animation/font-awesome-animation-emi.css" rel="stylesheet" />
+    <script src="index_files/fontawesome/js/fontawesome-all.min.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Estatística e jornalismo
+## principais conceitos e dicas para não errar
+### Renata Hirota
+### 28/09/2021
+
+---
+
+
+
+
+
+
+## Olá! 👋
+
+.pull-left[
+Meu nome é **Renata Hirota** e sou jornalista de dados. Sou formada na ECA-USP e graduanda em estatística no IME-USP. Lido com dados desde 2017, trabalho na Associação Brasileira de Jurimetria e no Núcleo Jornalismo. Faço parte da comunidade R-Ladies São Paulo, que promove a diversidade de gênero na comunidade da linguagem de programação R.
+
+<span>&lt;i class="fab  fa-github faa-vertical animated "&gt;&lt;/i&gt;</span>Github: [rmhirota](https://github.com/rmhirota)&lt;br&gt;
+<span>&lt;i class="fab  fa-twitter faa-float animated "&gt;&lt;/i&gt;</span>Twitter: [@renata_mh](https://twitter.com/renata_mh)
+]
+
+.pull-right[
+&lt;img src="imgs/perfil.png" width="220" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## Conteúdo
+
+- [Por que é importante?](#pq)
+
+- [Média e outras medidas resumo](#media)
+
+- [Porcentagem e taxas](#pct)
+
+- [Tipos de dados e gráficos](#tipos)
+
+- [Inferência: população e amostra](#inferencia)
+
+- [Armadilhas com dados](#armadilhas)
+
+- [Boas práticas gerais](#praticas)
+
+---
+background-image: url(imgs/calvin.png)
+background-size: contain
+name: pq
+## Por que é importante?
+---
+## Por que é importante?
+
+.pull-left[
+- É fácil chegar a conclusões falsas a partir de dados reais
+
+- Pode mudar completamente seu lide
+
+- Fica mais fácil escrever de forma mais clara
+
+- Consequentemente, ajuda a explicar temas complexos ao leitor
+]
+
+.pull-right[
+&lt;img src="imgs/hobbes.png" width="220" style="display: block; margin: auto;" /&gt;
+]
+
+---
+class: middle center 
+![](imgs/covid.jpeg)
+
+
+???
+
+A pandemia é o maior exemplo de como entender os dados e o básico de estatística eleva a qualidade da cobertura. De repente, aprendemos sobre taxa de transmissão, média móvel e outros conceitos que não necesariamente faziam parte do nosso dia-a-dia
+
+---
+class: middle center
+![](imgs/media_movel.png)
+
+---
+class: inverse middle center
+name: media
+# Média e outras medida resumo
+---
+
+
+## O que significa média?
+
+_altura média_  
+_salário médio_  
+...
+
+Às vezes, usamos a palavra **média**, mas os conceitos mais adequados à situação são **mediana** ou **moda**.
+
+--
+
+## Média, mediana e moda: medidas de escala
+
+**Média**: Soma de todos os valores dividida pela quantidade. É mais sensível a valores extremos.
+
+**Mediana**: Divide os dados na metade. Metade dos valores é menor que a mediana (e metade é maior).
+
+**Moda**: Valor mais comum. Um conjunto de dados pode ter mais de uma moda.
+
+---
+background-image: url(imgs/mean.jpg)
+background-size: contain
+---
+background-image: url(imgs/mean2.jpg)
+background-size: contain
+---
+background-image: url(imgs/median.png)
+background-size: contain
+---
+background-image: url(imgs/median2.png)
+background-size: contain
+---
+background-image: url(imgs/mode.png)
+background-size: contain
+---
+background-image: url(imgs/mode2.png)
+background-size: contain
+---
+## Amplitude, variância e desvio padrão: medidas de dispersão
+
+.pull-left[
+**Amplitude**: Diferença entre o valor máximo e valor mínimo.
+
+**Variância**: Média das diferenças ao quadrado entre a média e cada valor.
+
+**Desvio padrão**: Raiz quadrada da variância.
+]
+
+.pull-right[
+&lt;center&gt;&lt;img src="imgs/variancia.png" height="400"&gt;&lt;/center&gt;
+]
+
+---
+class: inverse middle center
+name: pct
+# Porcentagens e taxas
+---
+
+## Porcentagens e taxas
+
+.pull-left[
+- Comparação de quantidades
+- Crescimento ao longo do tempo
+- Porcentagem `\(\neq\)` pontos percentuais
+
+&lt;br&gt;&lt;br&gt;
+&lt;center&gt;&lt;img src="imgs/prop.png" width="600"&gt;&lt;/center&gt;
+]
+--
+.pull-right[
+A diferença entre porcentagem e ponto percentual é confusa quando a quantidade que estamos medindo em si é uma porcentagem.
+
+Por exemplo: **_Intenção de voto cai de 52% para 36%_**
+
+- A diferença é de 16 pontos percentuais `$$(52 - 36 = 16)$$`
+
+- Mas a redução em si é de 30,8%, pois `$$\frac{36 - 52}{52} = -0,308$$`
+]
+
+---
+class: inverse middle center
+name: tipos
+# Tipos de Dados
+
+???
+Falar sem entrar muito em detalhes sobre os tipos de dados, ou tipos de variáveis, porque é importante pensar nisso e ter isso em conta na hora de criar visualizações, por exemplo.
+---
+## Variáveis categóricas
+
+&lt;center&gt;&lt;img src="imgs/tipos1.jpeg" width="850"&gt;&lt;/center&gt;
+
+---
+
+## Variáveis numéricas
+
+&lt;center&gt;&lt;img src="imgs/tipos2.jpg" width="700"&gt;&lt;/center&gt;
+
+---
+
+## Tipos de dados e tipos de visualizações
+
+.pull-left[
+Apesar de depender do contexto, alguns tipos de visualizações são mais comuns para certos tipos de dados.
+
+Gráficos de linha, por exemplo, geralmente denotam uma mudança de valores ao longo do tempo, enquanto contagens por categoria costumam ser ilustradas em gráficos de barras, de pizza, etc.
+
+Para variáveis contínuas, é comum fazer histogramas, que mostram a distribuição dos valores.
+
+#### Referências úteis para visualização de dados:
+- [From Data to Viz](https://www.data-to-viz.com)
+- [Data Viz Project](https://datavizproject.com)
+- [The Data Visualisation Catalogue](https://datavizcatalogue.com)
+]
+
+.pull-right[
+&lt;center&gt;&lt;img src="imgs/graficos.jpg" width="500"&gt;&lt;/center&gt;
+]
+---
+class: inverse middle center
+name: inferencia
+# Inferência: população e amostra
+
+---
+## Inferência
+.pull-left[
+**População**: Conjunto de itens ou eventos de interesse
+
+**Amostra**: Subconjunto de uma população
+
+&lt;br&gt;
+Fazer inferência significa tirar conclusões a partir de amostras e extrapolá-las à população - o que necessariamente envolve uma medida de incerteza.
+]
+
+.pull-right[&lt;img src="imgs/inferencia.png" width="600"&gt;]
+
+
+---
+class: inverse middle center
+name: armadilhas
+# Armadilhas com dados
+---
+## Causalidade e correlação
+
+&lt;center&gt;&lt;img src="imgs/correlation.png" width="600"&gt;&lt;/center&gt;
+
+- É fácil chegar a conclusões não necessariamente verdadeiras
+- Se duas coisas estão relacionadas, uma influencia a outra? Causa e efeito?
+
+---
+class: middle center
+&lt;img src="imgs/correl.png"&gt;&lt;br&gt;&lt;/center&gt;
+---
+class: middle center
+&lt;img src="imgs/correl2.png"&gt;&lt;br&gt;
+
+---
+class: middle center
+&lt;img src="imgs/correl3.png"&gt;&lt;br&gt;
+Mais aqui: [Spurrious Correltions](http://tylervigen.com/spurious-correlations)
+
+---
+## Cuidado com títulos
+
+Nem sempre é tão óbvio. Na vida real, costuma ser mais sutil.
+
+&lt;center&gt;&lt;img src="imgs/voto-violencia.png"&gt;&lt;/center&gt;
+
+???
+
+No próprio texto, no meio da matéria, dizia que o fator mais importante era regional
+
+_Ao ser apresentado a esses cruzamentos, o cientista político Guilherme Russo, da Fundação Getulio Vargas, resolveu aprofundar a análise com comparações apenas entre municípios de uma mesma região. Nesse exercício, Russo constatou que, considerando só o conjunto dos municípios do Norte e do Nordeste, Bolsonaro apresentou uma tendência de ir progressivamente melhor nas áreas mais violentas. "Sugere que, numa análise geral, mais macro, a questão regional foi mais importante na determinação do voto do que a da violência", afirmou._
+
+---
+## Falácia ecológica: conclusões sobre indivíduos a partir de grupos
+
+&lt;center&gt;&lt;iframe width="760" height="415" src="https://www.youtube.com/embed/RmYIpnzbQtM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;&lt;/center&gt;
+
+---
+class: inverse middle center
+name: praticas
+# Boas práticas gerais
+---
+## **Olhe** os dados
+
+&lt;center&gt;&lt;img src="imgs/ascombe.png" width="600"&gt;&lt;br&gt;
+Quarteto de Anscombe
+&lt;/center&gt;
+
+---
+## **Olhe** os dados
+
+&lt;center&gt;&lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;Always visualize your data! (Thanks to &lt;a href="https://twitter.com/AlbertoCairo?ref_src=twsrc%5Etfw"&gt;@albertocairo&lt;/a&gt; for the artwork 😀) &lt;a href="https://t.co/8D8sgLLqB5"&gt;pic.twitter.com/8D8sgLLqB5&lt;/a&gt;&lt;/p&gt;&amp;mdash; Justin Matejka (@JustinMatejka) &lt;a href="https://twitter.com/JustinMatejka/status/770682771656368128?ref_src=twsrc%5Etfw"&gt;August 30, 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/center&gt;
+
+---
+## Pense na **distribuição**
+
+.pull-left[
+[O seu salário diante da realidade brasileira](https://www.nexojornal.com.br/interativo/2016/01/11/O-seu-sal%C3%A1rio-diante-da-realidade-brasileira)
+
+&lt;img src="imgs/nexo.png" width="600"&gt;
+]
+
+.pull-right[
+- Dá ideia da distribuição de salários
+
+- Compara valores individuais, e não valores resumidos (média)
+]
+
+---
+
+## Evite confusão com os números
+
+.pull-left[
+[Em cinco dias, PM mata na Grande SP mais do que a média diária no estado](https://noticias.uol.com.br/cotidiano/ultimas-noticias/2019/04/03/em-cinco-dias-pm-mata-na-grande-sp-mais-do-que-a-media-diaria-no-estado.htm)
+&lt;img src="imgs/uol-pm.png" height="450"&gt;
+]
+.pull-right[
+As comparações são equivalentes?
+- No título, dá a impressão de estar comparando a soma de mortes de 5 dias (16) com a média diária (2 por dia)
+
+- Comparação da média de 5 dias com a média de um trimestre
+
+- Populações diferentes (Grande SP vs. estado de SP)]
+  
+---
+## Evite confusão com os números
+
+ Gráficos ajudam!
+
+&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+## Resumindo
+
+- Se for resumir seus dados, veja o que faz mais sentido: média? mediana?
+
+- Verifique qual o _tipo_ dos seus dados e que gráficos são mais adequados
+
+- Pense no contexto dos dados: são uma amostra? Qual a incerteza associada?
+
+- Os dados permitem fazer extrapolações?
+
+- Análise exploratória
+
+---
+.pull-left[
+## Referências
+- [Khan Academy - Estatística e Probabilidade](https://pt.khanacademy.org/math/statistics-probability)
+- [Curso STAT 414, da Penn State](https://onlinecourses.science.psu.edu/stat414/)
+- [The Curious Journalist's Guide to Data, Jonathan Stray](https://towcenter.gitbooks.io/curious-journalist-s-guide-to-data/)
+- [Statistics every writer should know](https://www.robertniles.com/stats/)
+- [Storytelling with data](http://www.storytellingwithdata.com)
+
+## Ilustrações
+- [Allison Horst | RStudio](https://github.com/allisonhorst/stats-illustrations)
+- [Ben Orlin | Math with bad drawings](https://mathwithbaddrawings.com/)
+]
+.pull-right[&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="imgs/data_cowboy.png"&gt;
+]
+
+---
+class: inverse, middle, center
+
+# Obrigada!
+
+**Renata Hirota**
+
+<span>&lt;i class="fab  fa-github faa-vertical animated "&gt;&lt;/i&gt;</span>Github: [rmhirota](https://github.com/rmhirota)&lt;br&gt;&lt;br&gt;
+<span>&lt;i class="fab  fa-twitter faa-float animated "&gt;&lt;/i&gt;</span>Twitter: [@renata_mh](https://twitter.com/renata_mh)&lt;br&gt;&lt;br&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

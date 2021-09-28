@@ -1,0 +1,559 @@
+---
+title: "Estatística para jornalistas"
+author: "Renata Hirota | Maria Marinho"
+date: "Congresso Abraji 2020"
+output: 
+  xaringan::moon_reader:
+    css: ["rladies", "rladies-fonts", "ninjutsu", "css/extra.css"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(dplyr)
+library(ggplot2)
+```
+
+# Quem somos
+
+.pull-left[
+```{r out.width = "220", fig.align = "left", echo = FALSE}
+knitr::include_graphics("imgs/renata.jpg")
+```
+]
+
+.pull-right[
+**Renata Hirota** é jornalista de dados, formada na ECA-USP e graduanda em estatística no IME-USP. Lida com dados desde 2017 e atualmente trabalha na Associação Brasileira de Jurimetria. Colabora também com o Núcleo Jornalismo e Science Pulse, iniciativa do Volt Data Lab que visa aproximar jornalistas e cientistas. Faz parte da comunidade R-Ladies São Paulo, que promove a diversidade de gênero na comunidade da linguagem de programação R.
+
+
+`r anicon::faa("github", animate="vertical")`Github: [rmhirota](https://github.com/rmhirota)  
+`r anicon::faa("twitter", animate="float")`Twitter: [@renata_mh](https://twitter.com/renata_mh)
+]
+
+---
+# Quem somos
+
+.pull-left[
+```{r out.width = "220", fig.align = "right", echo = FALSE}
+knitr::include_graphics("imgs/maria_marinho.jpg")
+```
+]
+
+.pull-right[
+**Maria Marinho** é formada em Processamento de Dados, bacharela e licenciada em Matemática com ênfase em Informática, pós graduada em Educação Matemática. Atuou na área de TI como Desenvolvedora de Sistemas e atualmente é Cientista de Dados na SulAmérica. Faz parte das comunidades R-Ladies e PyLadies São Paulo.
+
+`r anicon::faa("at", animate="float")`Email: mariamarinhos@gmail.com  
+`r anicon::faa("github", animate="vertical")`Github: [MaryMS](https://github.com/MaryMS)
+]
+
+---
+# R-Ladies
+
+## O que é?
+
+R-Ladies é uma organização mundial que promove a diversidade de gênero na comunidade da linguagem R.
+
+## Como?
+
+Através de meetups e mentorias em um ambiente seguro e amigável.
+
+Nosso principal objetivo é promover a linguagem computacional estatística R compartilhando conhecimento, assim, quem tiver interesse na linguagem será bem-vinda, independente do nível de conhecimento.
+
+---
+# R-Ladies
+
+## Para quem?
+
+Nosso principal público-alvo são as pessoas que se identificam com o gênero feminino, portanto, mulheres cis, mulheres trans, bem como pessoas não-binárias e queer.
+
+## Missão
+
+Como uma iniciativa de diversidade, a missão das R-Ladies é alcançar uma representação proporcional de pessoas de gêneros atualmente sub-representados na comunidade R, incentivando, inspirando e capacitando-as.
+
+  
+  
+[About us - R-Ladies](https://rladies.org/about-us/)  
+[Meetup R-Ladies São Paulo](https://www.meetup.com/rladies-sao-paulo/)
+---
+
+background-image: url(imgs/rladies.png)
+background-size: contain
+
+---
+
+# Sobre o que vamos falar
+
+
+- Por que é importante?
+- Média, mediana e moda
+- Porcentagem e taxas
+- Tipos de dados
+- Tipos de gráficos
+- Inferência: população e amostra
+- Armadilhas com dados
+- Boas práticas gerais
+
+
+---
+background-image: url(imgs/calvin.png)
+background-size: contain
+
+# Por que é importante?
+
+---
+# Por que é importante?
+
+- É fácil chegar a conclusões falsas a partir de dados reais
+- Pode mudar completamente seu lide
+- Ajuda a escrever de forma mais clara
+
+---
+background-image: url(imgs/covid.jpeg)
+background-size: contain
+
+---
+class: inverse
+background-image: url(imgs/media_movel.png)
+
+# Média, mediana e moda
+
+---
+# Média, mediana e moda
+
+### O que significa média?
+
+
+altura média?  
+salário médio?  
+  
+  
+Às vezes, usamos a palavra **média**, mas os conceitos mais adequados à situação são **mediana** ou **moda**.
+
+---
+
+# Média, mediana e moda
+
+**Média**: Soma de todos os valores dividida pela quantidade. É mais sensível a valores extremos.
+
+**Mediana**: Divide os dados na metade. Metade dos valores é menor que a mediana (e metade é maior).
+
+**Moda**: Valor mais comum. Um conjunto de dados pode ter mais de uma moda.
+
+---
+# Média, mediana e moda
+
+**Média móvel**: Média utilizada em séries temporais que considera uma janela "móvel" para fazer o cálculo. 
+
+```{r echo = FALSE, fig.width = 10, fig.height = 5}
+da <- data.table::fread("dados/covid_uf.csv")
+da %>% 
+  filter(state == "SP", date >= "2020-06-01") %>% 
+  mutate(ma_7 = zoo::rollmean(new_deaths, k = 7, fill = NA, align = "right")) %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = new_deaths)) +
+  geom_line(aes(x = date, y = new_deaths)) +
+  geom_point(aes(x = date, y = ma_7, colour = "média móvel")) +
+  geom_line(aes(x = date, y = ma_7, colour = "média móvel")) +
+  labs(x = "data", y = "mrotes por dia", title = "Mortes por covid-19 em SP") +
+  theme_minimal() +
+  theme(legend.title = element_blank())
+
+```
+
+---
+
+background-image: url(imgs/mean.jpg)
+background-size: contain
+
+---
+
+background-image: url(imgs/mean2.jpg)
+background-size: contain
+
+---
+background-image: url(imgs/median.png)
+background-size: contain
+
+---
+background-image: url(imgs/median2.png)
+background-size: contain
+---
+background-image: url(imgs/mode.png)
+background-size: contain
+
+---
+background-image: url(imgs/mode2.png)
+background-size: contain
+---
+class: inverse
+background-image: url(imgs/prop.png)
+background-size: contain
+
+# Porcentagens e taxas
+
+---
+# Porcentagens e taxas
+
+- Comparação de quantidades
+- Crescimento ao longo do tempo
+- Porcentagem $\neq$ pontos percentuais
+
+--
+
+<br><br>
+A diferença entre porcentagem e ponto percentual é confusa quando a quantidade que estamos medindo em si é uma porcentagem.
+
+Por exemplo: **_Aprovação de Bolsonaro caiu de 52% para 36%_**
+
+- A diferença é de 16 pontos percentuais $(52 - 36 = 16)$
+- Mas a diminuição é de 30,8%, pois $\frac{36 - 52}{52} = -0,308$
+
+---
+background-image: url(imgs/tipos_dados.jpg)
+background-size: contain
+
+# Tipos de Dados
+
+---
+# Gráficos
+
+<img src="imgs/graf_pico.jpg" style="width: 70%" /><br>
+
+Gráficos são representações visuais que têm como objetivo a apresentação dos dados, sejam eles categóricos ou numéricos. Eles facilitam a visualização e análise de dados.
+
+---
+
+# Tipos de Gráficos
+
+- Barras
+- Linhas
+- Dispersão
+- Histograma
+- Boxplot
+- Pizza, não!
+
+É importante escolher o gráfico adequado ao público e ao dado que será visualizado.
+
+---
+# Gráfico de Barras (ou colunas)
+
+É utilizado para resumir um conjunto de dados categóricos, comparando quantidades ou demostrando valores pontuais de um determinado período.
+
+- Ele mostra os dados utilizando um número de barras de mesmo tamanho. O que as diferenciam são suas alturas que representam as frequências das categorias.
+
+- O eixo x mostra os valores da variável e o eixo y, as respectivas frequências.
+
+- Pode ser representado na vertical ou na horizontal.
+
+---
+# Gráfico de Barras (ou colunas)
+
+<img src="imgs/graf_obitos_covid.jpg" style="width: 98%, height: 60%" /><br>
+
+---
+# Gráfico de Barras (ou colunas)
+<img src="imgs/graf_vendas_varejo.jpg" style="width: 98%" /><br>
+
+---
+# Gráfico de Barras (ou colunas)
+<img src="imgs/graf_taxa_morte_covid.jpg" style="width: 98%" /><br>
+
+---
+# Gráfico de Linhas
+
+Ele é usado para analisar dados ao longo do tempo. É muito utilizado para representar tendências nos dados quantitativos, pois mostra o crescimento ou decrescimento de um fenômeno/processo em um determinado período (séries temporais).
+
+O eixo x representa o tempo (anos, meses, dias, etc.) e o eixo y mostra o outro dado em questão.
+
+---
+# Gráfico de Linhas
+
+<img src="imgs/graf_casos_covid_worldmeters.jpg" style="width: 98%" /><br>
+
+---
+# Gráfico de Dispersão (ou scatterplot)
+
+É útil para analisar a relação entre duas variáveis quantitativas. Uma delas é a variável independente X (causa) e a outra, uma variável dependente Y (efeito).
+
+- O conjunto de pares ordenados forma uma nuvem de pontos.
+
+- O diagrama não prova que uma variável afeta outra variável, mas indica se existe relação e qual a intensidade da relação entre elas (positiva, negativa, nula). 
+
+---
+# Gráfico de Dispersão (ou scatterplot)
+
+<img src="imgs/graph_covid_income.jpg" style="width: 98%" /><br>
+
+---
+# Histograma
+
+Permite representar visualmente a distribuição de frequência dos dados (quantitativos contínuos).
+
+- Apresenta vários retângulos justapostos (barras verticais). Embora tenha semelhanças com o gráfico de barras, o histograma não apresenta espaço entre as colunas.
+
+- É um importante indicador para a análise da distribuição dos dados.
+
+---
+# Histograma
+
+<img src="imgs/histograma.jpg" style="width: 98%" /><br>
+
+---
+# Boxplot (ou gráfico de caixa)
+
+É utilizado para avaliar a distribuição de dados quantitativos. 
+
+- Mostra as seguintes medidas estatísticas: mediana, primeiro quartil, terceiro quartil, menor valor e maior valor. 
+
+- Ajuda na visualização do centro, dispersão e assimetria dos dados analisados. 
+
+- Identifica outliers (valores extremos).
+
+- É possível realizar comparações visuais entre dois ou mais grupos.
+
+---
+# Boxplot (ou gráfico de caixa)
+
+<img src="imgs/boxplot.jpg" style="width: 98%" /><br>
+
+---
+# Boxplot (ou gráfico de caixa)
+
+<img src="imgs/boxplot_covid.jpg" style="width: 80%" /><br>
+
+---
+# Gráfico de Pizza, não!
+
+É um gráfico onde os valores de cada categoria estatística representada são proporcionais às respectivas frequências.
+
+- Por que não utilizá-lo? 
+Observe o gráfico a seguir.
+
+---
+# Gráfico de Pizza, não!
+
+<img src="imgs/pizza1.jpg" style="width: 80%" /><br>
+
+A maioria das pessoas concordará que "Supplier B", representado em azul médio no canto inferior direito, parece ser o maior. Se você tivesse que estimar que proporção o supplier B compõe do mercado geral, qual porcentagem você estimaria? 
+
+35%? 
+
+40%?
+
+---
+# Gráfico de Pizza, não!
+
+<img src="imgs/pizza2.jpg" style="width: 80%" /><br>
+
+---
+# Gráfico de Pizza, não!
+
+- O "Supplier B" - que parece o maior, com 31% - é realmente menor do que o "Supplier A" acima dele, que parece menor.
+
+- Mesmo quando retiramos o 3D e achatamos o bolo, os desafios de interpretação permanecem. 
+
+- O olho humano não é bom em atribuir valor quantitativo ao espaço bidimensional. 
+
+- Concluindo: os gráficos de pizza são difíceis de ler. 
+
+- Sugestão: substituir o gráfico de pizza por um gráfico de barra horizontal organizado do maior para o menor ou vice-versa. 
+
+
+---
+# Gráfico de Pizza, não!
+
+<img src="imgs/alternativa_pizza.jpg" style="width: 70%" /><br>
+
+---
+# Extra: Ferramentas para criação de gráficos
+<img src="imgs/Python_R_logo.jpg" style="width: 98%" /><br>
+
+- Linguagens de Programação: R (ggplot2, plotly) e Python (matplotlib, seaborn, boukeh, plotly)
+
+- Ferramenta online: [Flourish](https://flourish.studio)
+
+---
+# Extra: Dicas para melhor se comunicar com os dados
+ 
+1. Entenda o contexto
+2. Escolha uma apresentação visual adequada
+3. Elimine a saturação
+4. Foque a atenção onde você deseja
+5. Pense como um designer
+6. Conte uma história
+
+Essa lista e a reflexão sobre o gráfico de pizza foram retirados do livro Storytelling With Data da autora Cole Nussbaumer Knaflic.
+
+Os sites abaixo podem ajudar na escolha do gráfico mais adequado para o seu dado:
+
+- [From Data to Viz](https://www.data-to-viz.com)
+- [Data Viz Project](https://datavizproject.com)
+- [The Data Visualisation Catalogue](https://datavizcatalogue.com)
+
+---
+# Inferência: população e amostra
+.center[![](imgs/sopa.jpg)]
+
+---
+# Inferência: população e amostra
+
+#### Amostra: subconjunto de uma população
+#### População: basicamente todo mundo
+  
+Conclusões a partir da amostra extrapoladas à população - incerteza
+.center[![](imgs/inferencia.png)]
+
+
+---
+class: inverse, middle, center
+# Armadilhas com dados
+
+.center[![](imgs/correlation.png)]
+
+---
+
+# Armadilhas com dados
+
+## Causalidade?
+
+- É fácil chegar a conclusões não necessariamente verdadeiras
+- Causalidade: se duas coisas estão relacionadas, uma influencia a outra? Causa e efeito?
+
+---
+## Causalidade?
+
+<img src="imgs/correl.png" style="width: 98%" /><br>
+
+---
+## Causalidade?
+
+<img src="imgs/correl2.png" style="width: 98%" /><br>
+
+---
+## Causalidade?
+
+<img src="imgs/correl3.png" style="width: 98%" /><br>
+Mais aqui: [Spurrious Correltions](http://tylervigen.com/spurious-correlations)
+
+---
+## Causalidade?
+
+Nem sempre é tão óbvio. Na vida real, é _muito_ mais sutil.
+
+.center[![](imgs/voto-violencia.png)]
+
+---
+class: middle
+
+_Ao ser apresentado a esses cruzamentos, o cientista político Guilherme Russo, da Fundação Getulio Vargas, resolveu aprofundar a análise com comparações apenas entre municípios de uma mesma região. Nesse exercício, Russo constatou que, considerando só o conjunto dos municípios do Norte e do Nordeste, Bolsonaro apresentou uma tendência de ir progressivamente melhor nas áreas mais violentas. "Sugere que, numa análise geral, mais macro, a questão regional foi mais importante na determinação do voto do que a da violência", afirmou._
+  
+  
+[Bolsonaro vai pior nos locais mais violentos - Valor Econômico](https://www.valor.com.br/node/5914559)
+
+---
+## Falácia ecológica: conclusões sobre indivíduos a partir de grupos
+
+
+<iframe width="760" height="415" src="https://www.youtube.com/embed/RmYIpnzbQtM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+class: inverse, middle, center
+
+# Algumas boas práticas
+
+---
+## **Olhe** os dados
+
+<img src="imgs/ascombe.png" style="width: 85%" /><br>
+Quarteto de Ascombe
+
+---
+## **Olhe** os dados
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Always visualize your data! (Thanks to <a href="https://twitter.com/AlbertoCairo?ref_src=twsrc%5Etfw">@albertocairo</a> for the artwork 😀) <a href="https://t.co/8D8sgLLqB5">pic.twitter.com/8D8sgLLqB5</a></p>&mdash; Justin Matejka (@JustinMatejka) <a href="https://twitter.com/JustinMatejka/status/770682771656368128?ref_src=twsrc%5Etfw">August 30, 2016</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+
+---
+## Pense na **distribuição**
+
+[O seu salário diante da realidade brasileira](https://www.nexojornal.com.br/interativo/2016/01/11/O-seu-sal%C3%A1rio-diante-da-realidade-brasileira)
+
+<img src="imgs/nexo.png" style=" display: block; margin-left: auto; margin-right: auto;"></img>
+
+- Dá ideia da distribuição de salários
+- Compara valores individuais, e não valores resumidos (média)
+---
+
+## Evite confusão
+
+[Em cinco dias, PM mata na Grande SP mais do que a média diária no estado](https://noticias.uol.com.br/cotidiano/ultimas-noticias/2019/04/03/em-cinco-dias-pm-mata-na-grande-sp-mais-do-que-a-media-diaria-no-estado.htm)
+<img src="imgs/uol-pm.png" height="500" style=" display: block; margin-left: auto; margin-right: auto;"></img>
+  
+---
+## Evite confusão
+
+As comparações são equivalentes?
+  
+--
+
+- No título, dá a impressão de estar comparando a soma de mortes de 5 dias (16) com a média diária (2 por dia)
+- Comparação da média de 5 dias com a média de um trimestre
+- Populações diferentes (Grande SP vs. estado de SP)
+
+---
+## Evite confusão
+
+ Gráficos ajudam!
+
+```{r fig.height=6, fig.width=10, fig.align="center", echo=F}
+da <- tibble::tibble(
+  data = as.Date(c("2018-01-01", "2018-02-01", "2018-03-01", "2019-01-01", "2019-02-01", "2019-03-01")),
+  mortes = c(61, 59, 52, 67, 52, 76)
+) %>% 
+  dplyr::mutate(
+    ano = lubridate::year(data),
+    mes = lubridate::month(data)
+  )
+
+da %>% 
+  mutate(ano = as.factor(ano), mes = as.factor(mes)) %>% 
+  ggplot(aes(x = mes, y = mortes, fill = ano, group = ano)) +
+  geom_col(position = "dodge") +
+  labs(title = "Mortos pela PM em SP", x = "") +
+  theme_minimal() +
+  scale_x_discrete(labels=c("1" = "janeiro", "2" = "fevereiro", "3" = "março")) +
+  scale_fill_viridis_d(begin = 0.1, end = 0.6)
+
+```
+
+---
+# Resumindo
+
+- Se for resumir seus dados, veja o que faz mais sentido: média? mediana?
+- Verifique qual o _tipo_ dos seus dados e que gráficos são mais adequados
+- Pense no contexto dos dados: são uma amostra? Qual a incerteza associada?
+- Os dados permitem fazer extrapolações?
+- Análise exploratória
+
+---
+
+# Referências
+- [Khan Academy - Estatística e Probabilidade](https://pt.khanacademy.org/math/statistics-probability)
+- [Curso STAT 414, da Penn State](https://onlinecourses.science.psu.edu/stat414/)
+- [The Curious Journalist's Guide to Data, Jonathan Stray](https://towcenter.gitbooks.io/curious-journalist-s-guide-to-data/)
+- [Statistics every writer should know](https://www.robertniles.com/stats/)
+- [Storytelling with data](http://www.storytellingwithdata.com)
+
+---
+class: inverse, middle, center
+
+# Obrigada!
+
+**Renata Hirota**
+
+`r anicon::faa("github", animate="vertical")`Github: [rmhirota](https://github.com/rmhirota)<br>
+`r anicon::faa("twitter", animate="float")`Twitter: [@renata_mh](https://twitter.com/renata_mh)<br><br>
+
+**Maria Marinho**
+
+`r anicon::faa("at", animate="vertical")`Email: mariamarinhos@gmail.com<br>
+`r anicon::faa("github", animate="vertical")`Github: [MaryMS](https://github.com/MaryMS)
